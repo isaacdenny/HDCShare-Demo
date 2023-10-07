@@ -1,0 +1,3 @@
+#HDCShare Project
+
+## THIS PROJECT IS NOT OPEN SOURCE ##
