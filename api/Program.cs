@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: AllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://host.docker.internal.*").AllowAnyMethod().AllowAnyHeader();
+                          policy.WithOrigins("http://host.docker.internal.*", "http://fe").AllowAnyMethod().AllowAnyHeader();
                       });
 });
 

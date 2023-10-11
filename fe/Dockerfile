@@ -1,12 +1,19 @@
-FROM node:latest as build
+# pull official base image
+FROM node:13.12.0-alpine
 
-ENV REACT_APP_API_URL='http://api:3500/api'
-
+# set working directory
 WORKDIR /app
 
-COPY ./package.json /app/package.json
-COPY ./package-lock.json ./app/package-lock.json
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
-COPY . .
-RUN npm run build
+
+# add app
+COPY . ./
+
+# start app
+CMD ["npm", "start"]

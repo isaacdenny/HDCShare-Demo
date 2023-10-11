@@ -19,21 +19,22 @@ const MainSection = () => {
   }
 
   async function getFiles() {
-    try {
-      await fetch("https://localhost:32782/api/Appfiles", {
-        method: "GET",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setFiles(data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await fetch('${REACT_APP_API_URL}/lots/', {
+    //     method: "GET",
+    //   })
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       setFiles(data);
+    //     });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    console.log("getting files");
   }
 
   useEffect(() => getFiles, [files]);
-  useEffect(() => doSearch, [doSearch, setFilter]);
+  // useEffect(() => doSearch, [doSearch, setFilter]);
 
   return (
     <div className="main-panel">
@@ -41,7 +42,7 @@ const MainSection = () => {
         <input
           type="text"
           name="search"
-          value={filter}
+          value={filter === null ? "" : filter}
           placeholder="Search Files..."
           onChange={(e) => setFilter(e.target.value)}
         />

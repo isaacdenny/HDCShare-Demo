@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const LotsPanel = () => {
-  const [lots, setLots] = useState([
-    { id: 0, name: "Charlotte", fileCount: 3 },
-    { id: 1, name: "Colfax", fileCount: 10 },
-    { id: 2, name: "Smithfield", fileCount: 4 },
-  ]);
+  const [lots, setLots] = useState([]);
   const [selected, setSelected] = useState(0);
+
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  async function getLots() {
+    try {
+      const res = await axios.get(`${API_URL}/lot`);
+      const data = await res.json();
+      setLots(data);
+    } catch (error) {
+      console.log("Error fetching and parsing data", error);
+    }
+  }
+
+  useEffect(() => getLots, []);
 
   return (
     <div className="panel">
@@ -17,7 +28,7 @@ const LotsPanel = () => {
             return (
               <div
                 key={lot.id}
-                className={selected === lot.id ?" box box-selected" : "box"}
+                className={selected === lot.id ? "box box-selected" : "box"}
                 onClick={() => setSelected(lot.id)}
               >
                 <p className="name">{lot.name}</p>
