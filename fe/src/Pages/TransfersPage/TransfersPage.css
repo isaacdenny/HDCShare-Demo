@@ -1,0 +1,73 @@
+.file-panel {
+	background-color: white;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	width: 100%;
+	height: 100%;
+}
+
+tr {
+	color: #2C4351;
+	background-color: white;
+	border-radius: 4px;
+	transition: 0.5s;
+}
+
+td {
+	padding: 1rem;
+}
+
+table {
+	width: 100%;
+	border: 2px black;
+}
+
+th {
+	padding: 1rem;
+	font-weight: bold;
+	text-align: left;
+}
+
+.table-item:hover {
+	background-color: #EDF1F0;
+	transition: 0.5s;
+}
+
+.box .name {
+	font-weight: bold;
+}
+
+.box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0rem 0rem 0rem 1rem;
+	transition: 0.5s;
+	margin: 0.3rem 0rem;
+	border-radius: 4px;
+	min-width: 150px;
+}
+
+.box:hover {
+	background-color: #EDF1F0;
+	transition: 0.5s;
+}
+
+.box-selected {
+	background-color: #2C4351;
+	color: white
+}
+
+
+.box-selected:hover {
+	background-color: #2C4351;
+	color: white;
+}
+
+.box-list {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./FileUploadPage.css";
 
 const FileUploadPage = () => {
   const [files, setFiles] = useState([]);
@@ -46,8 +47,8 @@ const FileUploadPage = () => {
     <div className="main-panel">
       {!hasUploaded ? (
         <div className="panel">
-          <div>
-            <label htmlFor="files">Files to Send</label>
+          <div className="upload-form">
+            <label htmlFor="files">Upload Files</label>
             <input
               type="file"
               name="files"
@@ -60,7 +61,7 @@ const FileUploadPage = () => {
               <option value="Charlotte">Charlotte</option>
               <option value="Smithfield">Smithfield</option>
             </select>
-            <input type="button" value="Send Transfer" onClick={uploadFiles} />
+            <button onClick={uploadFiles}>Send Transfer</button>
           </div>
           {files.length > 0 ? (
             files.map((file) => {

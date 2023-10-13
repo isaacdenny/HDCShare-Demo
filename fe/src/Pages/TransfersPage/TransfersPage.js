@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./TransfersPage.css";
 
 const TransfersPage = () => {
   const [transfers, setTransfers] = useState([]);
@@ -8,7 +9,7 @@ const TransfersPage = () => {
   const [lots, setLots] = useState([]);
   const [lotSelected, setLotSelected] = useState({ id: "0", name: "Lot" });
 
-  const lotID = 1;
+  const lotID = 3;
   const API_URL = process.env.REACT_APP_API_URL;
 
   function doSearch(e) {
@@ -30,7 +31,7 @@ const TransfersPage = () => {
     });
     setFound(temp);
   }
-  
+
   async function getLots() {
     try {
       const res = await axios.get(`${API_URL}/lot`);
@@ -70,16 +71,28 @@ const TransfersPage = () => {
           Transfers From {lotSelected === null ? "None" : lotSelected.name}
         </h2>
         <div className="file-panel">
-          {found.length >= 0 ? (
-            found.map((transfer) => (
-              <div className="file" key={transfer.id}>
-                <p style={{ fontWeight: "bold" }}>{transfer.subject}</p>
-              </div>
-            ))
-          ) : (
-            <div>No files</div>
-          )}
+          <table>
+            <tr>
+              <th>Subject</th>
+              <th>Size</th>
+              <th style={{ textAlign: "right" }}>Date</th>
+            </tr>
+            {found.length >= 0 ? (
+              found.map((transfer) => (
+                <tr className="table-item" key={transfer.id}>
+                  <td style={{ fontWeight: "bold" }}>{transfer.subject}</td>
+                  <td>2 MB</td>
+                  <td style={{ textAlign: "right" }}>
+                    {new Date(transfer.createdAt).toDateString()}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <div>No files</div>
+            )}
+          </table>
         </div>
+        <button className="primary-button">Send A Transfer</button>
       </div>
       <div className="panel">
         <h2>Lots</h2>

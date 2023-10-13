@@ -1,4 +1,4 @@
-import FileUploadPage from "./FileUploadPage";
-import TransfersPage from "./TransfersPage";
+import FileUploadPage from "./FileUploadPage/FileUploadPage";
+import TransfersPage from "./TransfersPage/TransfersPage";
 
 export { TransfersPage, FileUploadPage };

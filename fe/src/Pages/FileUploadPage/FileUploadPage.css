@@ -1,0 +1,23 @@
+.upload-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.upload-form input[type="file"] {
+	margin: 1rem 0rem;
+	border: none;
+}
+
+.upload-form select {
+    margin: 1rem 0rem;
+    border: none;
+}
+
+.upload-form label {
+	font-weight: bold;
+}
+
+.upload-form button {
+	margin: 1rem 0rem;
+    border: none;
+}

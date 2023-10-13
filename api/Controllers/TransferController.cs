@@ -30,7 +30,8 @@ namespace api.Controllers
                                {
                                    ID = t.ID,
                                    Subject = t.Subject,
-                                   SentFrom = t.SentFrom
+                                   SentFrom = t.SentFrom,
+                                   CreatedAt = t.CreatedAt
                                };
             if (!ModelState.IsValid)
             {
@@ -52,7 +53,8 @@ namespace api.Controllers
                                {
                                    ID = t.ID,
                                    Subject = t.Subject,
-                                   SentFrom = t.SentFrom
+                                   SentFrom = t.SentFrom,
+                                   CreatedAt = t.CreatedAt
                                };
             if (!ModelState.IsValid)
             {
@@ -68,7 +70,7 @@ namespace api.Controllers
         {
             if (files == null)
                 return BadRequest(ModelState);
-                
+
             if (files.Count <= 0)
             {
                 return StatusCode(400, "Invalid Transfer: No files added");
