@@ -19,7 +19,7 @@ namespace api
                 {
                     new Transfer()
                     {
-                        Subject = "Watermelon",
+                        Subject = "New Hiring Package",
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = 3,
                         SentTo = 2,
@@ -31,10 +31,10 @@ namespace api
                     },
                     new Transfer()
                     {
-                        Subject = "Pikachu",
+                        Subject = "7 Day Check ins",
                         CreatedAt = new DateTime(1903,1,1),
-                        SentFrom = 2,
-                        SentTo = 3,
+                        SentFrom = 3,
+                        SentTo = 1,
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "Test File 1", Content = "This is some test content" }
@@ -43,12 +43,27 @@ namespace api
                     },
                     new Transfer()
                     {
-                        Subject = "Pikachu2",
+                        Subject = "7 Day Check In",
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = 2,
                         SentTo = 3,
                         Files = new List<HFile>()
                         {
+                            new HFile { Name = "Test File 1", Content = "This is some test content" },
+                            new HFile { Name = "Test File 1", Content = "This is some test content" }
+                        }
+
+                    },
+                    new Transfer()
+                    {
+                        Subject = "Friday Event Info",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = 1,
+                        SentTo = 3,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "Test File 2", Content = "This is some test content" },
+                            new HFile { Name = "Test File 3", Content = "This is some test content" },
                             new HFile { Name = "Test File 2", Content = "This is some test content" },
                             new HFile { Name = "Test File 3", Content = "This is some test content" }
                         }
@@ -65,6 +80,13 @@ namespace api
                     new Lot()
                     {
                         Name = "Charlotte",
+                        Address = "1123 Test Rd",
+                        City = "Charlotte",
+                        Contact = "test@hdc1922.com",
+                    },
+                    new Lot()
+                    {
+                        Name = "Smithfield",
                         Address = "1123 Test Rd",
                         City = "Charlotte",
                         Contact = "test@hdc1922.com",

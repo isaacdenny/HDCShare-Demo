@@ -13,12 +13,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: AllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://host.docker.internal.*", "http://fe").AllowAnyMethod().AllowAnyHeader();
+                          policy.WithOrigins("http://host.docker.internal.*", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
                       });
 });
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<ILotRepository, LotRepository>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -26,7 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ContainerConnection"));
+    var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
+    options.UseMySql(builder.Configuration.GetConnectionString("MYSQLConnection"), serverVersion);
 });
 
 var app = builder.Build();
