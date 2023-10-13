@@ -19,6 +19,9 @@ namespace api.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<HFileDto>))]
 		public IActionResult GetFiles(int id)
 		{
+			if (!_fileRepository.TransferExists(id))
+				return NotFound();
+			
 			var files = _fileRepository.GetFilesInTransfer(id);
 			var fileDtos = from f in files
 						   select new HFileDto()

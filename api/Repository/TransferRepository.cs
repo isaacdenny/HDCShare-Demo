@@ -7,7 +7,7 @@ namespace api.Repository
     public class TransferRepository : ITransferRepository
     {
         private DataContext _context;
-        public TransferRepository(DataContext context) 
+        public TransferRepository(DataContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace api.Repository
 
         public Transfer GetTransfer(int id)
         {
-            throw new NotImplementedException();
+            return _context.Transfers.Where(t => t.ID == id).First();
         }
 
         public ICollection<Transfer> GetRecievedTransfersByLotID(int id)
