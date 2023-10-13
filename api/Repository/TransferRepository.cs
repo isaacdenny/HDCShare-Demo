@@ -1,4 +1,5 @@
 ﻿using api.Data;
+using api.Dto;
 using api.Interfaces;
 using api.Models;
 
@@ -35,6 +36,26 @@ namespace api.Repository
         public ICollection<Transfer> GetSentTransfersByLotID(int id)
         {
             return _context.Transfers.Where(t => t.SentFrom == id).ToList();
+        }
+
+        public bool CreateTransfer(int fromID, int toID, string subject, ICollection<HFile> files)
+        {
+            var transfer = new Transfer()
+            {
+                Subject = subject,
+                SentTo = toID,
+                SentFrom = fromID,
+                Files = files,
+                CreatedAt = DateTime.Now
+            };
+            _context.Add(transfer);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

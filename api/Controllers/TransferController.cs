@@ -60,5 +60,26 @@ namespace api.Controllers
             }
             return Ok(transferDtos);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult SendTransfer(int sentFromID, int sendToID, string subject, ICollection<HFile> files)
+        {
+            if (files == null)
+                return BadRequest(ModelState);
+                
+            if (files.Count <= 0)
+            {
+                return StatusCode(400, "Invalid Transfer: No files added");
+            }
+
+            if (!_transferRepository.CreateTransfer(sentFromID, sendToID, subject, files))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully created");
+        }
     }
 }

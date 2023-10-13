@@ -30,6 +30,7 @@ const TransfersPage = () => {
     });
     setFound(temp);
   }
+  
   async function getLots() {
     try {
       const res = await axios.get(`${API_URL}/lot`);

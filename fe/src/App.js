@@ -1,12 +1,16 @@
 import "./Theme/style.css";
-import FileUpload from "./Components/FileUpload";
-import TransfersPage from "./Components/TransfersPage";
+import { BrowserRouter, Routes, Navigate, Route } from "react-router-dom";
+import { TransfersPage, FileUploadPage } from "./Pages";
 
 function App() {
   return (
     <div className="App">
-      <TransfersPage />
-      {/* <FileUpload /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path={"/"} element={<TransfersPage />} />
+          <Route path={"/upload"} element={<FileUploadPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
