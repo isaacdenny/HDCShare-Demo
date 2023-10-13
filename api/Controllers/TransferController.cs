@@ -17,19 +17,20 @@ namespace api.Controllers
             _transferRepository = transferRepository;
         }
 
-        [HttpGet("recieved/{id}")]
+        [HttpGet("received/{id}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Transfer>))]
-        public IActionResult GetRecievedTransfers(int id)
+        public IActionResult GetReceivedTransfers(int id)
         {
             if (!_transferRepository.LotExists(id))
                 return NotFound();
 
-            var transfers = _transferRepository.GetRecievedTransfersByLotID(id);
+            var transfers = _transferRepository.GetReceivedTransfersByLotID(id);
             var transferDtos = from t in transfers
                                select new TransferDto
                                {
                                    ID = t.ID,
                                    Subject = t.Subject,
+                                   SentFrom = t.SentFrom
                                };
             if (!ModelState.IsValid)
             {
@@ -51,6 +52,7 @@ namespace api.Controllers
                                {
                                    ID = t.ID,
                                    Subject = t.Subject,
+                                   SentFrom = t.SentFrom
                                };
             if (!ModelState.IsValid)
             {

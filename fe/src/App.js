@@ -1,13 +1,11 @@
 import "./Theme/style.css";
-import MainSection from "./Components/MainSection";
 import FileUpload from "./Components/FileUpload";
-import LotsPanel from "./Components/LotsPanel";
+import TransfersPage from "./Components/TransfersPage";
 
 function App() {
   return (
     <div className="App">
-      <MainSection />
-      <LotsPanel />
+      <TransfersPage />
       {/* <FileUpload /> */}
     </div>
   );

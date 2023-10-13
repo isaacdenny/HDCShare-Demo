@@ -27,7 +27,7 @@ namespace api.Repository
             return _context.Transfers.Where(t => t.ID == id).First();
         }
 
-        public ICollection<Transfer> GetRecievedTransfersByLotID(int id)
+        public ICollection<Transfer> GetReceivedTransfersByLotID(int id)
         {
             return _context.Transfers.Where(t => t.SentTo == id).ToList();
         }
