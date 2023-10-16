@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Navbar } from "../../Components";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./TransfersPage.css";
-import { Navbar } from "../../Components"
+import "./InboxPage.css";
 
 const TransfersPage = () => {
   const [transfers, setTransfers] = useState([]);
@@ -9,10 +10,13 @@ const TransfersPage = () => {
   const [filter, setFilter] = useState(null);
   const [lots, setLots] = useState([]);
   const [lotSelected, setLotSelected] = useState({ id: "0", name: "Lot" });
+  const navigate = useNavigate();
+
+  const [hasClicked, setHasClicked] = useState(false);
+  const [tID, setTID] = useState(null);
 
   const lotID = 3;
   let ts = [];
-  const API_URL = process.env.REACT_APP_API_URL;
 
   function doSearch(e) {
     e.preventDefault();
@@ -24,6 +28,12 @@ const TransfersPage = () => {
     });
     setFound(temp);
   }
+
+  const handleClick = (id) => {
+    console.log("running 1");
+    setTID(id);
+    setHasClicked(true);
+  };
 
   function handleLotSelected(lot) {
     setLotSelected(lot);
@@ -42,7 +52,7 @@ const TransfersPage = () => {
 
   async function getLots() {
     try {
-      const res = await axios.get(`${API_URL}/lot`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/lot`);
       const data = res.data;
       setLots(data);
       handleLotSelected(data[0]);
@@ -53,7 +63,9 @@ const TransfersPage = () => {
 
   async function getTransfers() {
     try {
-      let res = await axios.get(`${API_URL}/transfer/received/${lotID}`);
+      let res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/transfer/received?id=${lotID}`
+      );
       ts = res.data;
       setTransfers(ts);
       getLots();
@@ -63,6 +75,13 @@ const TransfersPage = () => {
   }
 
   useEffect(() => getTransfers, []);
+
+  useEffect(() => {
+    if (hasClicked && tID !== null) {
+      console.log("running");
+      navigate(`/transfers/${tID}`);
+    }
+  }, [hasClicked]);
 
   return (
     <>
@@ -93,7 +112,11 @@ const TransfersPage = () => {
             <tbody>
               {found.length >= 0 ? (
                 found.map((transfer) => (
-                  <tr className="table-item" key={transfer.id}>
+                  <tr
+                    className="table-item"
+                    key={transfer.id}
+                    onClick={() => handleClick(transfer.id)}
+                  >
                     <td style={{ fontWeight: "bold" }}>{transfer.subject}</td>
                     <td>2 MB</td>
                     <td style={{ textAlign: "right" }}>
@@ -102,7 +125,7 @@ const TransfersPage = () => {
                   </tr>
                 ))
               ) : (
-                <tr>No files</tr>
+                <tr></tr>
               )}
             </tbody>
           </table>
@@ -127,7 +150,7 @@ const TransfersPage = () => {
               );
             })
           ) : (
-            <>No lots</>
+            <div>Cannot connect to server</div>
           )}
         </div>
       </div>

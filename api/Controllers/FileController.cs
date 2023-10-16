@@ -21,13 +21,14 @@ namespace api.Controllers
 		{
 			if (!_fileRepository.TransferExists(id))
 				return NotFound();
-			
+
 			var files = _fileRepository.GetFilesInTransfer(id);
 			var fileDtos = from f in files
 						   select new HFileDto()
 						   {
 							   ID = f.ID,
 							   Name = f.Name,
+							   Size = f.Size,
 							   Content = f.Content
 						   };
 			if (!ModelState.IsValid)
@@ -49,6 +50,7 @@ namespace api.Controllers
 			{
 				ID = file.ID,
 				Name = file.Name,
+				Size = file.Size,
 				Content = file.Content
 			};
 

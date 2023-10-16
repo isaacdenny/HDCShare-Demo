@@ -17,9 +17,32 @@ namespace api.Controllers
             _transferRepository = transferRepository;
         }
 
-        [HttpGet("received/{id}")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(TransferDto))]
+        public IActionResult GetTransfer(int id)
+        {
+            if (!_transferRepository.TransferExists(id))
+                return NotFound();
+
+            var transfer = _transferRepository.GetTransfer(id);
+            var tDto = new TransferDto()
+            {
+                ID = transfer.ID,
+                Subject = transfer.Subject,
+                SentFrom = transfer.SentFrom,
+                CreatedAt = transfer.CreatedAt,
+            };
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(tDto);
+        }
+
+        [HttpGet("received")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Transfer>))]
-        public IActionResult GetReceivedTransfers(int id)
+        public IActionResult GetReceivedTransfers([FromQuery] int id)
         {
             if (!_transferRepository.LotExists(id))
                 return NotFound();
@@ -40,9 +63,9 @@ namespace api.Controllers
             return Ok(transferDtos);
         }
 
-        [HttpGet("sent/{id}")]
+        [HttpGet("sent")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<TransferDto>))]
-        public IActionResult GetSentTransfers(int id)
+        public IActionResult GetSentTransfers([FromQuery] int id)
         {
             if (!_transferRepository.LotExists(id))
                 return NotFound();

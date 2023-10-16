@@ -1,0 +1,22 @@
+.file-viewer {
+	width: 100%;
+	min-height: 500px;
+	background-color: aliceblue;
+}
+
+.file {
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	transition: 0.3s;
+}
+
+.file:hover {
+	background-color: #EDF1F0;
+	transition: 0.3s;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+}
