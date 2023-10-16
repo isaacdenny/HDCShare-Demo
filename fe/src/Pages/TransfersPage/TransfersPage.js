@@ -10,6 +10,7 @@ const TransfersPage = () => {
   const [lotSelected, setLotSelected] = useState({ id: "0", name: "Lot" });
 
   const lotID = 3;
+  let ts = [];
   const API_URL = process.env.REACT_APP_API_URL;
 
   function doSearch(e) {
@@ -26,10 +27,18 @@ const TransfersPage = () => {
   function handleLotSelected(lot) {
     setLotSelected(lot);
     let temp = [];
-    transfers.map((t) => {
-      if (t.sentFrom === lot.id) temp.push(t);
-    });
+    if (transfers.length <= 0) {
+      ts.map((t) => {
+        if (t.sentFrom === lot.id) temp.push(t);
+      });
+    }
+    else {
+      transfers.map((t) => {
+        if (t.sentFrom === lot.id) temp.push(t);
+      });
+    }
     setFound(temp);
+    console.log("Got found");
   }
 
   async function getLots() {
@@ -37,7 +46,7 @@ const TransfersPage = () => {
       const res = await axios.get(`${API_URL}/lot`);
       const data = res.data;
       setLots(data);
-      setLotSelected(data[0]);
+      handleLotSelected(data[0]);
     } catch (error) {
       console.log("Error fetching and parsing data", error);
     }
@@ -46,15 +55,17 @@ const TransfersPage = () => {
   async function getTransfers() {
     try {
       let res = await axios.get(`${API_URL}/transfer/received/${lotID}`);
-      setTransfers(res.data);
+      ts = res.data;
+      setTransfers(ts);
+      console.log("Got transfers");
+      getLots();
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => getTransfers, []);
-  useEffect(() => getLots, []);
-
+  console.log(found);
   return (
     <>
       <div className="main-panel">
@@ -72,24 +83,28 @@ const TransfersPage = () => {
         </h2>
         <div className="file-panel">
           <table>
-            <tr>
-              <th>Subject</th>
-              <th>Size</th>
-              <th style={{ textAlign: "right" }}>Date</th>
-            </tr>
-            {found.length >= 0 ? (
-              found.map((transfer) => (
-                <tr className="table-item" key={transfer.id}>
-                  <td style={{ fontWeight: "bold" }}>{transfer.subject}</td>
-                  <td>2 MB</td>
-                  <td style={{ textAlign: "right" }}>
-                    {new Date(transfer.createdAt).toDateString()}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <div>No files</div>
-            )}
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Size</th>
+                <th style={{ textAlign: "right" }}>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {found.length >= 0 ? (
+                found.map((transfer) => (
+                  <tr className="table-item" key={transfer.id}>
+                    <td style={{ fontWeight: "bold" }}>{transfer.subject}</td>
+                    <td>2 MB</td>
+                    <td style={{ textAlign: "right" }}>
+                      {new Date(transfer.createdAt).toDateString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>No files</tr>
+              )}
+            </tbody>
           </table>
         </div>
         <button className="primary-button">Send A Transfer</button>
