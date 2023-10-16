@@ -1,13 +1,3 @@
-.file-panel {
-	background-color: white;
-	padding: 1rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: left;
-	width: 100%;
-	height: 100%;
-}
-
 tr {
 	color: #2C4351;
 	background-color: white;
@@ -20,7 +10,6 @@ td {
 }
 
 table {
-	width: 100%;
 	border: 2px black;
 }
 

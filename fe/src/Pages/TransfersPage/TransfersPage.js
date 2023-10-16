@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./TransfersPage.css";
+import { Navbar } from "../../Components"
 
 const TransfersPage = () => {
   const [transfers, setTransfers] = useState([]);
@@ -31,14 +32,12 @@ const TransfersPage = () => {
       ts.map((t) => {
         if (t.sentFrom === lot.id) temp.push(t);
       });
-    }
-    else {
+    } else {
       transfers.map((t) => {
         if (t.sentFrom === lot.id) temp.push(t);
       });
     }
     setFound(temp);
-    console.log("Got found");
   }
 
   async function getLots() {
@@ -57,7 +56,6 @@ const TransfersPage = () => {
       let res = await axios.get(`${API_URL}/transfer/received/${lotID}`);
       ts = res.data;
       setTransfers(ts);
-      console.log("Got transfers");
       getLots();
     } catch (error) {
       console.log(error);
@@ -65,10 +63,12 @@ const TransfersPage = () => {
   }
 
   useEffect(() => getTransfers, []);
-  console.log(found);
+
   return (
     <>
-      <div className="main-panel">
+      <Navbar />
+      {/* Main Section */}
+      <div className="main-section">
         <form className="search-bar" onSubmit={doSearch}>
           <input
             type="text"
@@ -81,7 +81,7 @@ const TransfersPage = () => {
         <h2>
           Transfers From {lotSelected === null ? "None" : lotSelected.name}
         </h2>
-        <div className="file-panel">
+        <div className="panel">
           <table>
             <thead>
               <tr>
@@ -107,8 +107,8 @@ const TransfersPage = () => {
             </tbody>
           </table>
         </div>
-        <button className="primary-button">Send A Transfer</button>
       </div>
+      {/* Lots Panel */}
       <div className="panel">
         <h2>Lots</h2>
         <div className="box-list">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./FileUploadPage.css";
+import { Navbar } from "../../Components";
 
 const FileUploadPage = () => {
   const [files, setFiles] = useState([]);
@@ -44,49 +45,52 @@ const FileUploadPage = () => {
     }
   }
   return (
-    <div className="main-panel">
-      {!hasUploaded ? (
-        <div className="panel">
-          <div className="upload-form">
-            <label htmlFor="files">Upload Files</label>
-            <input
-              type="file"
-              name="files"
-              onChange={(e) => saveFiles(e)}
-              multiple
-            />
-            <label htmlFor="lots">Send to </label>
-            <select id="lots" name="lots">
-              <option value="Colfax">Colfax</option>
-              <option value="Charlotte">Charlotte</option>
-              <option value="Smithfield">Smithfield</option>
-            </select>
-            <button onClick={uploadFiles}>Send Transfer</button>
+    <>
+      <Navbar />
+      <div className="main-section">
+        {!hasUploaded ? (
+          <div className="panel">
+            <div className="upload-form">
+              <label htmlFor="files">Upload Files</label>
+              <input
+                type="file"
+                name="files"
+                onChange={(e) => saveFiles(e)}
+                multiple
+              />
+              <label htmlFor="lots">Send to </label>
+              <select id="lots" name="lots">
+                <option value="Colfax">Colfax</option>
+                <option value="Charlotte">Charlotte</option>
+                <option value="Smithfield">Smithfield</option>
+              </select>
+              <button className="primary" onClick={uploadFiles}>Send Transfer</button>
+            </div>
+            {files.length > 0 ? (
+              files.map((file) => {
+                return (
+                  <div className="File-viewer-container" key={file.name}>
+                    <embed
+                      className="File-viewer"
+                      src={URL.createObjectURL(file)}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </div>
-          {files.length > 0 ? (
-            files.map((file) => {
-              return (
-                <div className="File-viewer-container" key={file.name}>
-                  <embed
-                    className="File-viewer"
-                    src={URL.createObjectURL(file)}
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </div>
-      ) : (
-        <div>
-          Thanks for uploading
-          <button onClick={() => setHasUploaded(false)}>
-            Upload another file
-          </button>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div>
+            Thanks for uploading
+            <button onClick={() => setHasUploaded(false)}>
+              Upload another file
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
