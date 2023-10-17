@@ -34,9 +34,8 @@ export const metadata = {
 const DRAWER_WIDTH = 240;
 
 const LINKS = [
-  { text: "Home", href: "/", icon: HomeIcon },
+  { text: "Inbox", href: "/", icon: ChecklistIcon },
   { text: "Starred", href: "/starred", icon: StarIcon },
-  { text: "Inbox", href: "/inbox", icon: ChecklistIcon },
   { text: "Recent", href: "/recent", icon: DashboardIcon },
   { text: "Compose", href: "/upload", icon: ChecklistIcon },
 ];
