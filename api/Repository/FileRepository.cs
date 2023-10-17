@@ -23,14 +23,14 @@ namespace api.Repository
 			return _context.Files.Where(f => f.ID == id).First();
 		}
 
-		public ICollection<HFile> GetFilesInTransfer(int id)
+		public ICollection<HFile> GetFilesInPack(int id)
 		{
 			return _context.Files.FromSql($"SELECT * FROM Files WHERE transferID = {id}").ToList();
 		}
 
-		public bool TransferExists(int id)
+		public bool PackExists(int id)
 		{
-			return _context.Transfers.Any(t => t.ID == id);
+			return _context.FilePacks.Any(t => t.ID == id);
 		}
 	}
 }

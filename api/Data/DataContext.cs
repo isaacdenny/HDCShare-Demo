@@ -8,7 +8,7 @@ namespace api.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<Lot> Lots { get; set; }
-        public DbSet<Transfer> Transfers { get; set; }
+        public DbSet<FilePack> FilePacks { get; set; }
         public DbSet<HFile> Files { get; set; }
     }
 }

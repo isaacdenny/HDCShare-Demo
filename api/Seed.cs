@@ -13,11 +13,11 @@ namespace api
         }
         public void SeedDataContext()
         {
-            if (!dataContext.Transfers.Any())
+            if (!dataContext.FilePacks.Any())
             {
-                var transfers = new List<Transfer>()
+                var transfers = new List<FilePack>()
                 {
-                    new Transfer()
+                    new FilePack()
                     {
                         Subject = "New Hiring Package",
                         CreatedAt = new DateTime(1903,1,1),
@@ -29,7 +29,7 @@ namespace api
                         }
 
                     },
-                    new Transfer()
+                    new FilePack()
                     {
                         Subject = "7 Day Check ins",
                         CreatedAt = new DateTime(1903,1,1),
@@ -41,7 +41,7 @@ namespace api
                         }
 
                     },
-                    new Transfer()
+                    new FilePack()
                     {
                         Subject = "7 Day Check In",
                         CreatedAt = new DateTime(1903,1,1),
@@ -54,7 +54,7 @@ namespace api
                         }
 
                     },
-                    new Transfer()
+                    new FilePack()
                     {
                         Subject = "Friday Event Info",
                         CreatedAt = new DateTime(1903,1,1),
@@ -70,7 +70,7 @@ namespace api
 
                     }
                 };
-                dataContext.Transfers.AddRange(transfers);
+                dataContext.FilePacks.AddRange(transfers);
                 dataContext.SaveChanges();
             }
             if (!dataContext.Lots.Any())

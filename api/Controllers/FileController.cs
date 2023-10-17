@@ -19,10 +19,10 @@ namespace api.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<HFileDto>))]
 		public IActionResult GetFiles(int id)
 		{
-			if (!_fileRepository.TransferExists(id))
+			if (!_fileRepository.PackExists(id))
 				return NotFound();
 
-			var files = _fileRepository.GetFilesInTransfer(id);
+			var files = _fileRepository.GetFilesInPack(id);
 			var fileDtos = from f in files
 						   select new HFileDto()
 						   {

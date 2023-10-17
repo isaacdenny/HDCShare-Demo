@@ -21,7 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<ILotRepository, LotRepository>();
-builder.Services.AddScoped<ITransferRepository, TransferRepository>();
+builder.Services.AddScoped<IFilePackRepository, FilePackRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
