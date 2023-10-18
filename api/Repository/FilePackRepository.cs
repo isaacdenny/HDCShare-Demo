@@ -39,13 +39,18 @@ namespace api.Repository
             return _context.FilePacks.Where(t => t.SentFrom == id).ToList();
         }
 
-        public bool CreatePack(int fromID, ICollection<Lot> toLots, string subject, string message, ICollection<HFile> files)
+        public bool CreatePack(int fromID, ICollection<LotDto> toLots, string subject, string message, ICollection<HFile> files)
         {
+            var lots = new List<Lot>();
+            foreach (var lot in toLots) {
+                lots.Add(_context.Lots.Where(l => l.ID == lot.ID).First());
+            }
+
             var p = new FilePack()
             {
                 Subject = subject,
                 Message = message,
-                SentTo = toLots,
+                SentTo = lots,
                 SentFrom = fromID,
                 Files = files,
                 CreatedAt = DateTime.Now

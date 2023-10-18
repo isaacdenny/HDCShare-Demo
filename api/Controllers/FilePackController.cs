@@ -29,6 +29,7 @@ namespace api.Controllers
             {
                 ID = pack.ID,
                 Subject = pack.Subject,
+                Message = pack.Message,
                 SentFrom = pack.SentFrom,
                 CreatedAt = pack.CreatedAt,
             };
@@ -48,13 +49,14 @@ namespace api.Controllers
                 return NotFound();
 
             var packs = _packRepository.GetReceivedPacksByLotID(id);
-            var packDtos = from t in packs
+            var packDtos = from p in packs
                            select new FilePackDto
                            {
-                               ID = t.ID,
-                               Subject = t.Subject,
-                               SentFrom = t.SentFrom,
-                               CreatedAt = t.CreatedAt
+                               ID = p.ID,
+                               Subject = p.Subject,
+                               Message = p.Message,
+                               SentFrom = p.SentFrom,
+                               CreatedAt = p.CreatedAt
                            };
             if (!ModelState.IsValid)
             {
@@ -76,6 +78,7 @@ namespace api.Controllers
                            {
                                ID = p.ID,
                                Subject = p.Subject,
+                               Message = p.Message,
                                SentFrom = p.SentFrom,
                                CreatedAt = p.CreatedAt
                            };
@@ -89,17 +92,20 @@ namespace api.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult SendPack([FromQuery] int fromID, [FromQuery] ICollection<Lot> toIDs, [FromQuery] string subject, string message, [FromBody] ICollection<HFile> files)
+        public IActionResult SendPack(FilePackIn filePack)
         {
-            if (files == null)
+            if (!_packRepository.LotExists(filePack.SentFrom))
+                return BadRequest("Invalid ID");
+
+            if (filePack.Files == null)
                 return BadRequest(ModelState);
 
-            if (files.Count <= 0)
+            if (filePack.Files.Count <= 0)
             {
                 return StatusCode(400, "Invalid Transfer: No files added");
             }
 
-            if (!_packRepository.CreatePack(fromID, toIDs, subject, message, files))
+            if (!_packRepository.CreatePack(filePack.SentFrom, filePack.SentTo, filePack.Subject, filePack.Message, filePack.Files))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);

@@ -3,28 +3,31 @@
 import {
   Box,
   Button,
-  FormControl,
-  Input,
+  Card,
+  CardContent,
+  Checkbox,
   InputLabel,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Title } from "@mui/icons-material";
+
+const lotID = 3;
 
 const UploadPage = () => {
   const [files, setFiles] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelFile] = useState(null);
   const [fileData, setFileData] = useState([]);
   const [hasUploaded, setHasUploaded] = useState(false);
-  const [sendTo, setSendTo] = useState(0);
+  const [recipients, setRecipients] = useState([]);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-
-  const lotID = 1;
+  const [lots, setLots] = useState([]);
 
   function saveFiles(e) {
     var temp = [];
@@ -54,17 +57,31 @@ const UploadPage = () => {
     }
 
     try {
-      const qparams = `?sentFromID=${lotID}&sendToID=${sendTo}&subject=${subject}&message=${message}`;
-      const res = await axios.post(
-        `${process.env.API_URL}/transfer${qparams}`,
-        fileData
-      );
+      const res = await axios.post(`${process.env.API_URL}/filepack`, {
+        sentFrom: lotID,
+        sentTo: recipients,
+        subject: subject,
+        message: message,
+        files: fileData,
+      });
       console.log(res);
       setHasUploaded(true);
     } catch (ex) {
       console.log(ex);
     }
   }
+
+  async function getLots() {
+    try {
+      const res = await fetch(`${process.env.API_URL}/lot`);
+      const data = await res.json();
+      setLots(data);
+    } catch (error) {
+      console.log("Error fetching and parsing data", error);
+    }
+  }
+
+  useEffect(() => getLots, []);
 
   return (
     <>
@@ -108,7 +125,7 @@ const UploadPage = () => {
             style={{ margin: "0.5rem 0rem 1rem 0rem" }}
           />
 
-          <Box sx={{ minHeight: "4rem" }}>
+          <Box sx={{ minHeight: "4rem", display: "flex" }}>
             {files.length > 0 ? (
               files.map((file, i) => {
                 if (selectedFile !== null && selectedFile === i) {
@@ -123,13 +140,26 @@ const UploadPage = () => {
                   );
                 }
                 return (
-                  <Box>
-                    <Typography variant="h6" noWrap component="div">
-                      {file.name}{" "}
-                      {file.size > 1000
-                        ? file.size / 1000 + " MB"
-                        : file.size + " KB"}
-                    </Typography>
+                  <Box
+                    sx={{ margin: "0rem 1rem 2rem 0rem" }}
+                    onClick={() => setSelFile(i)}
+                  >
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" noWrap component="div">
+                          {file.name}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          noWrap
+                          component="div"
+                        >
+                          {file.size > 1000
+                            ? file.size / 1000 + " MB"
+                            : file.size + " KB"}
+                        </Typography>
+                      </CardContent>
+                    </Card>
                   </Box>
                 );
               })
@@ -137,18 +167,31 @@ const UploadPage = () => {
               <></>
             )}
           </Box>
-          <InputLabel id="demo-simple-select-label">Send To</InputLabel>
+          <InputLabel id="select-label">Send To</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label={"Send To"}
-            value={sendTo}
-            onChange={(e) => setSendTo(e.target.value)}
+            labelId="select-label"
+            id="select"
+            multiple
+            value={recipients}
+            onChange={(e) => setRecipients(e.target.value)}
             sx={{ "margin-bottom": "1rem" }}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(recipients) => {
+              let ns = [];
+              recipients.forEach((r) => {
+                ns.push(r.name);
+              });
+              return ns.join(", ");
+            }}
           >
-            <MenuItem value={0}>Colfax</MenuItem>
-            <MenuItem value={1}>Charlotte</MenuItem>
-            <MenuItem value={2}>Smithfield</MenuItem>
+            {lots.map((lot) => {
+              return (
+                <MenuItem key={lot.id} value={lot}>
+                  <Checkbox checked={recipients.indexOf(lot) > -1} />
+                  <ListItemText primary={lot.name} />
+                </MenuItem>
+              );
+            })}
           </Select>
           <Button
             onClick={() => uploadFiles()}
@@ -160,7 +203,9 @@ const UploadPage = () => {
         </Box>
       ) : (
         <Box>
-          Your file has been uploaded
+          <Typography sx={{ marginBottom: "1rem" }} variant="h6">
+            Your files have been sent!
+          </Typography>
           <Button
             variant="contained"
             onClick={() => setHasUploaded(false)}

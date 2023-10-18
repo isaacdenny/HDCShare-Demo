@@ -11,17 +11,17 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Container, Tab, Tabs } from "@mui/material";
 import Link from "next/link";
 
+const lotID = 3;
+
 const Home = () => {
   const [rows, setRows] = useState([]);
   const [lots, setLots] = useState([]);
   const [results, setResults] = useState([]);
   const [lotSelected, setLotSelected] = useState(0);
 
-  const lotID = 3;
   let ts = [];
 
   function handleLotSelected(id) {
-    console.log(id);
     setLotSelected(id);
     let temp = [];
     if (rows.length <= 0) {
@@ -53,6 +53,7 @@ const Home = () => {
         `${process.env.API_URL}/filepack/received?id=${lotID}`
       );
       ts = await res.json();
+      console.log(ts);
       setRows(ts);
       getLots();
     } catch (error) {
@@ -98,30 +99,26 @@ const Home = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {results !== null ? (
-              results.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell>{row.subject}</TableCell>
-                  <TableCell align="right">{"3"}</TableCell>
-                  <TableCell align="right">
-                    {new Date(row.createdAt).toDateString()}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Link href={`/filepack/${row.id}`}>
-                      <Button variant="contained">View</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <></>
-            )}
+            {results.map((row) => (
+              (<TableRow
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell>{row.subject}</TableCell>
+                <TableCell align="right">{"3"}</TableCell>
+                <TableCell align="right">
+                  {new Date(row.createdAt).toDateString()}
+                </TableCell>
+                <TableCell align="right">
+                  <Link href={`/filepack/${row.id}`}>
+                    <Button variant="contained">View</Button>
+                  </Link>
+                </TableCell>
+              </TableRow>)
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
