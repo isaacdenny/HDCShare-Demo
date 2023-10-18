@@ -144,7 +144,9 @@ const Home = () => {
                                     ) : (
                                         <></>
                                     )}
-                                    <TableCell align="right">{"3"}</TableCell>
+                                    <TableCell align="right">
+                                        {r.fileCount}
+                                    </TableCell>
                                     <TableCell align="right">
                                         {new Date(r.createdAt).toDateString()}
                                     </TableCell>

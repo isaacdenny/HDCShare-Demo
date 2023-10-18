@@ -47,6 +47,7 @@ namespace api
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = charlotte,
                         SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 1,
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "SWE.pdf", Content = "This is some test content" }
@@ -60,6 +61,7 @@ namespace api
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = colfax,
                         SentTo = new List<Lot>() {colfax},
+                        FileCount = 1,
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "File.png", Content = "This is some test content" }
@@ -73,6 +75,22 @@ namespace api
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = smithfield,
                         SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 2,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "Test file.pdf", Content = "This is some test content" },
+                            new HFile { Name = "Test file.docx", Content = "This is some test content" }
+                        }
+
+                    },
+                    new FilePack()
+                    {
+                        Subject = "What are these files for?",
+                        Message = "Get these submitted quickly please!",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = smithfield,
+                        SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 2,
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "Test file.pdf", Content = "This is some test content" },
@@ -87,6 +105,82 @@ namespace api
                         CreatedAt = new DateTime(1903,1,1),
                         SentFrom = colfax,
                         SentTo = new List<Lot>() {charlotte},
+                        FileCount = 4,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "Test File 2.docx", Content = "This is some test content" },
+                            new HFile { Name = "Test File 3.png", Content = "This is some test content" },
+                            new HFile { Name = "Test File 2.docx", Content = "This is some test content" },
+                            new HFile { Name = "Test File 3.pdf", Content = "This is some test content" }
+                        }
+
+                    },
+                   new FilePack()
+                    {
+                        Subject = "Please READ",
+                        Message = "Sorry for the delay...",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = charlotte,
+                        SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 1,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "SWE.pdf", Content = "This is some test content" }
+                        }
+
+                    },
+                    new FilePack()
+                    {
+                        Subject = "7 Day Check ins",
+                        Message = "Get these submitted quickly please!",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = colfax,
+                        SentTo = new List<Lot>() {colfax},
+                        FileCount = 1,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "File.png", Content = "This is some test content" }
+                        }
+
+                    },
+                    new FilePack()
+                    {
+                        Subject = "Another 7 Day Check In",
+                        Message = "Get these submitted quickly please!",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = smithfield,
+                        SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 2,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "Test file.pdf", Content = "This is some test content" },
+                            new HFile { Name = "Test file.docx", Content = "This is some test content" }
+                        }
+
+                    },
+                    new FilePack()
+                    {
+                        Subject = "Files for Smithfield",
+                        Message = "Get these submitted quickly please!",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = smithfield,
+                        SentTo = new List<Lot>() {colfax, smithfield},
+                        FileCount = 2,
+                        Files = new List<HFile>()
+                        {
+                            new HFile { Name = "Test file.pdf", Content = "This is some test content" },
+                            new HFile { Name = "Test file.docx", Content = "This is some test content" }
+                        }
+
+                    },
+                    new FilePack()
+                    {
+                        Subject = "Important Info!",
+                        Message = "Let me know when you get this...",
+                        CreatedAt = new DateTime(1903,1,1),
+                        SentFrom = colfax,
+                        SentTo = new List<Lot>() {charlotte},
+                        FileCount = 4,
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "Test File 2.docx", Content = "This is some test content" },

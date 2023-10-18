@@ -33,11 +33,12 @@ namespace api.Controllers
                 SentFrom = new LotDto()
                 {
                     ID = pack.SentFrom.ID,
+                    Name = pack.SentFrom.Name,
                     Address = pack.SentFrom.Address,
                     City = pack.SentFrom.City,
                     Contact = pack.SentFrom.Contact,
-                    Name = pack.SentFrom.Name
                 },
+                FileCount = pack.FileCount,
                 CreatedAt = pack.CreatedAt,
             };
 
@@ -70,6 +71,7 @@ namespace api.Controllers
                                    City = p.SentFrom.City,
                                    Contact = p.SentFrom.Contact,
                                },
+                               FileCount = p.FileCount,
                                CreatedAt = p.CreatedAt
                            };
             if (!ModelState.IsValid)
@@ -96,11 +98,12 @@ namespace api.Controllers
                                SentFrom = new LotDto()
                                {
                                    ID = p.SentFrom.ID,
+                                   Name = p.SentFrom.Name,
                                    Address = p.SentFrom.Address,
                                    City = p.SentFrom.City,
                                    Contact = p.SentFrom.Contact,
-                                   Name = p.SentFrom.Name
                                },
+                               FileCount = p.FileCount,
                                CreatedAt = p.CreatedAt
                            };
 
@@ -127,7 +130,7 @@ namespace api.Controllers
                 return StatusCode(400, "Invalid Transfer: No files added");
             }
 
-            if (!_packRepository.CreatePack(filePack.SentFrom.ID, filePack.SentTo, filePack.Subject, filePack.Message, filePack.Files))
+            if (!_packRepository.CreatePack(filePack.SentFrom.ID, filePack.SentTo, filePack.Subject, filePack.Message, filePack.Files.Count, filePack.Files))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);

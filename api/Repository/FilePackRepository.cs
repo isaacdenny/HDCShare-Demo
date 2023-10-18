@@ -41,7 +41,7 @@ namespace api.Repository
             // return _context.Lots.Include(l => l.SentPacks).Where(l => l.ID == id).First().SentPacks; 
         }
 
-        public bool CreatePack(int fromID, ICollection<LotDto> toLots, string subject, string message, ICollection<HFile> files)
+        public bool CreatePack(int fromID, ICollection<LotDto> toLots, string subject, string message, int fileCount, ICollection<HFile> files)
         {
             var lots = new List<Lot>();
             foreach (var lot in toLots)
@@ -57,6 +57,7 @@ namespace api.Repository
                 Message = message,
                 SentTo = lots,
                 SentFrom = fromLot,
+                FileCount = fileCount,
                 Files = files,
                 CreatedAt = DateTime.Now
             };

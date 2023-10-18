@@ -9,7 +9,7 @@ namespace api.Models
         public string Message { get; set; }
         public ICollection<Lot> SentTo { get; set; }
         public Lot SentFrom { get; set; }
-        // public int FileCount { get; set; }
+        public int FileCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public required ICollection<HFile> Files { get; set; }
     }
