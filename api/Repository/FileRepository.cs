@@ -25,7 +25,7 @@ namespace api.Repository
 
 		public ICollection<HFile> GetFilesInPack(int id)
 		{
-			return _context.Files.FromSql($"SELECT * FROM Files WHERE transferID = {id}").ToList();
+			return _context.Files.FromSql($"SELECT * FROM Files WHERE filepackID = {id}").ToList();
 		}
 
 		public bool PackExists(int id)

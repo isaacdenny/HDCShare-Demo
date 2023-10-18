@@ -89,7 +89,7 @@ namespace api.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult SendPack(int fromID, ICollection<int> toIDs, string subject, ICollection<HFile> files)
+        public IActionResult SendPack([FromQuery] int fromID, [FromQuery] ICollection<Lot> toIDs, [FromQuery] string subject, string message, [FromBody] ICollection<HFile> files)
         {
             if (files == null)
                 return BadRequest(ModelState);
@@ -99,7 +99,7 @@ namespace api.Controllers
                 return StatusCode(400, "Invalid Transfer: No files added");
             }
 
-            if (!_packRepository.CreatePack(fromID, toIDs, subject, files))
+            if (!_packRepository.CreatePack(fromID, toIDs, subject, message, files))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);

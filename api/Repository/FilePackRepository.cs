@@ -2,6 +2,7 @@
 using api.Dto;
 using api.Interfaces;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -30,7 +31,7 @@ namespace api.Repository
 
         public ICollection<FilePack> GetReceivedPacksByLotID(int id)
         {
-            return _context.FilePacks.Where(t => t.SentTo.Any(t => t == id)).ToList();
+            return _context.FilePacks.Where(x => x.SentTo.Any(l => l.ID == id)).ToList();
         }
 
         public ICollection<FilePack> GetSentPacksByLotID(int id)
@@ -38,17 +39,18 @@ namespace api.Repository
             return _context.FilePacks.Where(t => t.SentFrom == id).ToList();
         }
 
-        public bool CreatePack(int fromID, ICollection<int> toIDs, string subject, ICollection<HFile> files)
+        public bool CreatePack(int fromID, ICollection<Lot> toLots, string subject, string message, ICollection<HFile> files)
         {
-            var transfer = new FilePack()
+            var p = new FilePack()
             {
                 Subject = subject,
-                SentTo = toIDs,
+                Message = message,
+                SentTo = toLots,
                 SentFrom = fromID,
                 Files = files,
                 CreatedAt = DateTime.Now
             };
-            _context.Add(transfer);
+            _context.Add(p);
             return Save();
         }
 

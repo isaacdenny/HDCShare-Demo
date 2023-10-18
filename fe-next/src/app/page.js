@@ -8,7 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Button, Container, Tab, Tabs } from "@mui/material";
+import Link from "next/link";
 
 const Home = () => {
   const [rows, setRows] = useState([]);
@@ -16,17 +17,8 @@ const Home = () => {
   const [results, setResults] = useState([]);
   const [lotSelected, setLotSelected] = useState(0);
 
-  const [hasClicked, setHasClicked] = useState(false);
-  const [tID, setTID] = useState(null);
-
   const lotID = 3;
   let ts = [];
-
-  const handleClick = (id) => {
-    console.log("running 1");
-    setTID(id);
-    setHasClicked(true);
-  };
 
   function handleLotSelected(id) {
     console.log(id);
@@ -58,7 +50,7 @@ const Home = () => {
   async function getTransfers() {
     try {
       let res = await fetch(
-        `${process.env.API_URL}/transfer/received?id=${lotID}`
+        `${process.env.API_URL}/filepack/received?id=${lotID}`
       );
       ts = await res.json();
       setRows(ts);
@@ -102,6 +94,7 @@ const Home = () => {
               <TableCell>Subject</TableCell>
               <TableCell align="right">Files</TableCell>
               <TableCell align="right">Date</TableCell>
+              <TableCell align="right">View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,6 +111,11 @@ const Home = () => {
                   <TableCell align="right">{"3"}</TableCell>
                   <TableCell align="right">
                     {new Date(row.createdAt).toDateString()}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Link href={`/filepack/${row.id}`}>
+                      <Button variant="contained">View</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))

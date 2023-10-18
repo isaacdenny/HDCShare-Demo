@@ -9,7 +9,7 @@ namespace api.Interfaces
         FilePack GetPack(int id);
         ICollection<FilePack> GetReceivedPacksByLotID(int id);
         ICollection<FilePack> GetSentPacksByLotID(int id);
-        bool CreatePack(int fromID, ICollection<int> toIDs, string subject, ICollection<HFile> files);
+        bool CreatePack(int fromID, ICollection<Lot> toLots, string subject, string message, ICollection<HFile> files);
         bool LotExists(int id);
         bool PackExists(int id);
         bool Save();

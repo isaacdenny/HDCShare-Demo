@@ -11,8 +11,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231013123935_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231017160915_MultipleRecipients")]
+    partial class MultipleRecipients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,46 @@ namespace api.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("FilePackLot", b =>
+                {
+                    b.Property<int>("ReceivedPacksID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SentToID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReceivedPacksID", "SentToID");
+
+                    b.HasIndex("SentToID");
+
+                    b.ToTable("FilePackLot");
+                });
+
+            modelBuilder.Entity("api.Models.FilePack", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("SentFrom")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("FilePacks");
+                });
 
             modelBuilder.Entity("api.Models.HFile", b =>
                 {
@@ -32,16 +72,19 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("FilePackID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TransferID")
-                        .HasColumnType("int");
+                    b.Property<double>("Size")
+                        .HasColumnType("double");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("TransferID");
+                    b.HasIndex("FilePackID");
 
                     b.ToTable("Files");
                 });
@@ -73,38 +116,29 @@ namespace api.Migrations
                     b.ToTable("Lots");
                 });
 
-            modelBuilder.Entity("api.Models.Transfer", b =>
+            modelBuilder.Entity("FilePackLot", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("api.Models.FilePack", null)
+                        .WithMany()
+                        .HasForeignKey("ReceivedPacksID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("SentFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SentTo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Transfers");
+                    b.HasOne("api.Models.Lot", null)
+                        .WithMany()
+                        .HasForeignKey("SentToID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.HFile", b =>
                 {
-                    b.HasOne("api.Models.Transfer", null)
+                    b.HasOne("api.Models.FilePack", null)
                         .WithMany("Files")
-                        .HasForeignKey("TransferID");
+                        .HasForeignKey("FilePackID");
                 });
 
-            modelBuilder.Entity("api.Models.Transfer", b =>
+            modelBuilder.Entity("api.Models.FilePack", b =>
                 {
                     b.Navigation("Files");
                 });
