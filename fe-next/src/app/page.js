@@ -8,7 +8,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, Container, Tab, Tabs, TextField } from "@mui/material";
+import {
+    Box,
+    Button,
+    Container,
+    Tab,
+    Tabs,
+    TextField,
+    Typography,
+} from "@mui/material";
 import Link from "next/link";
 
 const lotID = 3;
@@ -18,13 +26,14 @@ const Home = () => {
     const [lots, setLots] = useState([]);
     const [results, setResults] = useState([]);
     const [lotSelected, setLotSelected] = useState(0);
-    const [limit, setLimit] = useState(3);
-    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(25);
+    const [skip] = useState(limit);
 
-    function handleLotSelected(id, data) {
+    function handleResultChange(id, data, l) {
         setLotSelected(id);
         let temp = [];
-        data.map((r) => {
+        data.map((r, i) => {
+            if (i >= l) return;
             if (id == 0) {
                 temp.push(r);
             } else if (r.sentFrom.id === id) {
@@ -35,22 +44,9 @@ const Home = () => {
     }
 
     async function handleShowMore() {
-        let newSkip = skip + limit;
-        try {
-            let res = await fetch(
-                `${process.env.API_URL}/filepack/received?id=${lotID}`
-            );
-            const newRows = await res.json();
-            let temp = [];
-            rows.map((r) => temp.push(r));
-            newRows.map((r) => temp.push(r));
-            const data = temp;
-            setRows(temp);
-            setSkip(skip + limit);
-            handleLotSelected(lotSelected, data);
-        } catch (error) {
-            console.log(error);
-        }
+        let newLimit = limit + skip;
+        setLimit(newLimit);
+        handleResultChange(lotSelected, rows, newLimit);
     }
 
     async function getLots() {
@@ -70,8 +66,8 @@ const Home = () => {
             );
             const data = await res.json();
             setRows(data);
-			getLots();
-			handleLotSelected(0, data);
+            getLots();
+            handleResultChange(0, data, limit);
         } catch (error) {
             console.log(error);
         }
@@ -84,13 +80,15 @@ const Home = () => {
             <Box sx={{ display: "flex" }}>
                 <Tabs
                     value={lotSelected}
-                    onChange={(e) => handleLotSelected(e.target.value)}
+                    onChange={(e) =>
+                        handleResultChange(e.target.value, rows, limit)
+                    }
                     aria-label="basic tabs example"
                 >
                     <Tab
                         value={0}
                         label={"All"}
-                        onClick={() => handleLotSelected(0)}
+                        onClick={() => handleResultChange(0, rows, limit)}
                     />
                     {lots.length > 0 ? (
                         lots.map((lot) => {
@@ -99,7 +97,9 @@ const Home = () => {
                                     value={lot.id}
                                     label={lot.name}
                                     key={lot.id}
-                                    onClick={() => handleLotSelected(lot.id)}
+                                    onClick={() =>
+                                        handleResultChange(lot.id, rows, limit)
+                                    }
                                 />
                             );
                         })
@@ -151,17 +151,22 @@ const Home = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {rows.length < limit - 1 ? (
-                <></>
-            ) : (
-                <Button
-                    variant="contained"
-                    sx={{ marginTop: "1rem" }}
-                    onClick={() => handleShowMore()}
-                >
-                    Show More
-                </Button>
-            )}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                {rows.length <= limit - 1 ? (
+                    <></>
+                ) : (
+                    <Button
+                        variant="contained"
+                        sx={{ marginTop: "1rem" }}
+                        onClick={() => handleShowMore()}
+                    >
+                        Show More
+                    </Button>
+                )}
+                <Typography
+                    sx={{ fontSize: 14, padding: "1rem" }}
+                >{`Showing ${results.length} of ${rows.length}`}</Typography>
+            </Box>
         </>
     );
 };
