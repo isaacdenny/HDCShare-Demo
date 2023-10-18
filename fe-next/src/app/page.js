@@ -114,6 +114,11 @@ const Home = () => {
                         <TableRow>
                             <TableCell>ID</TableCell>
                             <TableCell>Subject</TableCell>
+                            {lotSelected === 0 ? (
+                                <TableCell>Sender</TableCell>
+                            ) : (
+                                <></>
+                            )}
                             <TableCell align="right">Files</TableCell>
                             <TableCell align="right">Date</TableCell>
                             <TableCell align="right">View</TableCell>
@@ -134,6 +139,11 @@ const Home = () => {
                                         {r.id}
                                     </TableCell>
                                     <TableCell>{r.subject}</TableCell>
+                                    {lotSelected === 0 ? (
+                                        <TableCell>{r.sentFrom.name}</TableCell>
+                                    ) : (
+                                        <></>
+                                    )}
                                     <TableCell align="right">{"3"}</TableCell>
                                     <TableCell align="right">
                                         {new Date(r.createdAt).toDateString()}
