@@ -53,7 +53,6 @@ const Home = () => {
         `${process.env.API_URL}/filepack/received?id=${lotID}`
       );
       ts = await res.json();
-      console.log(ts);
       setRows(ts);
       getLots();
     } catch (error) {
