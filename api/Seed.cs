@@ -12,21 +12,21 @@ namespace api
             this.dataContext = context;
         }
 
-        Lot charlotte = new Lot()
+        readonly Lot charlotte = new Lot()
         {
             Name = "Charlotte",
             Address = "1123 Test Rd",
             City = "Charlotte",
             Contact = "test@hdc1922.com",
         };
-        Lot smith = new Lot()
+        readonly Lot smithfield = new Lot()
         {
             Name = "Smithfield",
             Address = "1123 Test Rd",
             City = "Charlotte",
             Contact = "test@hdc1922.com",
         };
-        Lot colf = new Lot()
+        readonly Lot colfax = new Lot()
         {
             Name = "Colfax",
             Address = "1124 Test Rd",
@@ -45,8 +45,8 @@ namespace api
                         Subject = "New Hiring Package",
                         Message = "Sorry for the delay...",
                         CreatedAt = new DateTime(1903,1,1),
-                        SentFrom = 3,
-                        SentTo = new List<Lot>() {colf, smith},
+                        SentFrom = charlotte,
+                        SentTo = new List<Lot>() {colfax, smithfield},
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "SWE.pdf", Content = "This is some test content" }
@@ -58,8 +58,8 @@ namespace api
                         Subject = "7 Day Check ins",
                         Message = "Get these submitted quickly please!",
                         CreatedAt = new DateTime(1903,1,1),
-                        SentFrom = 3,
-                        SentTo = new List<Lot>() {colf},
+                        SentFrom = colfax,
+                        SentTo = new List<Lot>() {colfax},
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "File.png", Content = "This is some test content" }
@@ -71,8 +71,8 @@ namespace api
                         Subject = "7 Day Check In",
                         Message = "Get these submitted quickly please!",
                         CreatedAt = new DateTime(1903,1,1),
-                        SentFrom = 2,
-                        SentTo = new List<Lot>() {colf, smith},
+                        SentFrom = smithfield,
+                        SentTo = new List<Lot>() {colfax, smithfield},
                         Files = new List<HFile>()
                         {
                             new HFile { Name = "Test file.pdf", Content = "This is some test content" },
@@ -85,7 +85,7 @@ namespace api
                         Subject = "Friday Event Info",
                         Message = "Let me know when you get this...",
                         CreatedAt = new DateTime(1903,1,1),
-                        SentFrom = 1,
+                        SentFrom = colfax,
                         SentTo = new List<Lot>() {charlotte},
                         Files = new List<HFile>()
                         {
@@ -104,7 +104,7 @@ namespace api
             {
                 var lots = new List<Lot>()
                 {
-                    colf, smith, charlotte
+                    colfax, smithfield, charlotte
                 };
                 dataContext.Lots.AddRange(lots);
                 dataContext.SaveChanges();

@@ -26,11 +26,11 @@ const Home = () => {
     let temp = [];
     if (rows.length <= 0) {
       ts.map((t) => {
-        if (t.sentFrom === id) temp.push(t);
+        if (t.sentFrom.id === id) temp.push(t);
       });
     } else {
       rows.map((t) => {
-        if (t.sentFrom === id) temp.push(t);
+        if (t.sentFrom.id === id) temp.push(t);
       });
     }
     setResults(temp);
@@ -99,7 +99,7 @@ const Home = () => {
           </TableHead>
           <TableBody>
             {results.map((row) => (
-              (<TableRow
+              <TableRow
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
@@ -116,7 +116,7 @@ const Home = () => {
                     <Button variant="contained">View</Button>
                   </Link>
                 </TableCell>
-              </TableRow>)
+              </TableRow>
             ))}
           </TableBody>
         </Table>

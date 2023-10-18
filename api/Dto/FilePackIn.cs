@@ -7,7 +7,7 @@ namespace api.Dto
         public required string Subject { get; set; }
         public string Message { get; set; }
         public ICollection<LotDto> SentTo { get; set; }
-        public int SentFrom { get; set; }
+        public LotDto SentFrom { get; set; }
         public ICollection<HFile> Files { get; set; }
 
     }

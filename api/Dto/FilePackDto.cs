@@ -5,7 +5,7 @@
         public int ID { get; set; }
         public required string Subject { get; set; }
         public string Message { get; set; }
-        public int SentFrom { get; set; }
+        public LotDto SentFrom { get; set; }
         public DateTime CreatedAt { get; set; }
 
     }

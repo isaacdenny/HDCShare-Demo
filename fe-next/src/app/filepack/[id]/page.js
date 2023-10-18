@@ -5,7 +5,7 @@ import axios from "axios";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 
 const FilePackViewPage = ({ params }) => {
-  const [fpData, setFpData] = useState({});
+  const [fpData, setFpData] = useState({ sentFrom: { name: "" } });
   const [files, setFiles] = useState([]);
 
   async function getFilePack() {
@@ -23,7 +23,7 @@ const FilePackViewPage = ({ params }) => {
   async function getFiles() {
     try {
       const res = await axios.get(
-        `${process.env.API_URL}/file/fromtransfer/${params.id}`
+        `${process.env.API_URL}/file/frompack/${params.id}`
       );
       setFiles(res.data);
     } catch (error) {
@@ -36,8 +36,17 @@ const FilePackViewPage = ({ params }) => {
   return (
     <Box>
       <Typography sx={{ fontSize: 14 }} noWrap component="div" color="black">
-        Transfer #{fpData !== null ? fpData.id : "Error connecting to server"}
+        Transfer #
+        {fpData !== null
+          ? fpData.id + " - " + fpData.sentFrom.name
+          : "Error connecting to server"}
       </Typography>
+      <Typography
+        sx={{ fontSize: 14 }}
+        noWrap
+        component="div"
+        color="black"
+      ></Typography>
       <Typography
         variant="h5"
         sx={{ marginBottom: "1rem" }}

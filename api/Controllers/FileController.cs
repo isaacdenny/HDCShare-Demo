@@ -15,7 +15,7 @@ namespace api.Controllers
 			_fileRepository = fileRepository;
 		}
 
-		[HttpGet("fromtransfer/{id}")]
+		[HttpGet("frompack/{id}")]
 		[ProducesResponseType(200, Type = typeof(IEnumerable<HFileDto>))]
 		public IActionResult GetFiles(int id)
 		{

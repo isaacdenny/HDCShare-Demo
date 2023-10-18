@@ -8,5 +8,6 @@
         public string City { get; set; }
         public string Contact { get; set; }
         public ICollection<FilePack> ReceivedPacks { get; set; }
+        public ICollection<FilePack> SentPacks { get; set; }
     }
 }

@@ -26,32 +26,37 @@ namespace api.Repository
 
         public FilePack GetPack(int id)
         {
-            return _context.FilePacks.Where(t => t.ID == id).First();
+            return _context.FilePacks.Include(fp => fp.SentFrom).Where(t => t.ID == id).First();
         }
 
         public ICollection<FilePack> GetReceivedPacksByLotID(int id)
         {
-            return _context.FilePacks.Where(x => x.SentTo.Any(l => l.ID == id)).ToList();
+            return _context.FilePacks.Include(fp => fp.SentFrom).Where(x => x.SentTo.Any(l => l.ID == id)).ToList();
+            // return _context.Lots.Include(l => l.ReceivedPacks).Where(l => l.ID == id).First().ReceivedPacks;
         }
 
         public ICollection<FilePack> GetSentPacksByLotID(int id)
         {
-            return _context.FilePacks.Where(t => t.SentFrom == id).ToList();
+            return _context.FilePacks.Include(fp => fp.SentFrom).Where(t => t.SentFrom.ID == id).ToList();
+            // return _context.Lots.Include(l => l.SentPacks).Where(l => l.ID == id).First().SentPacks; 
         }
 
         public bool CreatePack(int fromID, ICollection<LotDto> toLots, string subject, string message, ICollection<HFile> files)
         {
             var lots = new List<Lot>();
-            foreach (var lot in toLots) {
+            foreach (var lot in toLots)
+            {
                 lots.Add(_context.Lots.Where(l => l.ID == lot.ID).First());
             }
+
+            var fromLot = _context.Lots.Where(l => l.ID == fromID).First();
 
             var p = new FilePack()
             {
                 Subject = subject,
                 Message = message,
                 SentTo = lots,
-                SentFrom = fromID,
+                SentFrom = fromLot,
                 Files = files,
                 CreatedAt = DateTime.Now
             };

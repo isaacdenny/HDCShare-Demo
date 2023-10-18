@@ -10,5 +10,10 @@ namespace api.Data
         public DbSet<Lot> Lots { get; set; }
         public DbSet<FilePack> FilePacks { get; set; }
         public DbSet<HFile> Files { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder m)
+        {
+            m.Entity<FilePack>().HasOne(p => p.SentFrom).WithMany(l => l.SentPacks).OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

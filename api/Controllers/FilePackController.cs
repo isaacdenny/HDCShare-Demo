@@ -30,7 +30,14 @@ namespace api.Controllers
                 ID = pack.ID,
                 Subject = pack.Subject,
                 Message = pack.Message,
-                SentFrom = pack.SentFrom,
+                SentFrom = new LotDto()
+                {
+                    ID = pack.SentFrom.ID,
+                    Address = pack.SentFrom.Address,
+                    City = pack.SentFrom.City,
+                    Contact = pack.SentFrom.Contact,
+                    Name = pack.SentFrom.Name
+                },
                 CreatedAt = pack.CreatedAt,
             };
 
@@ -55,7 +62,14 @@ namespace api.Controllers
                                ID = p.ID,
                                Subject = p.Subject,
                                Message = p.Message,
-                               SentFrom = p.SentFrom,
+                               SentFrom = new LotDto()
+                               {
+                                   ID = p.SentFrom.ID,
+                                   Name = p.SentFrom.Name,
+                                   Address = p.SentFrom.Address,
+                                   City = p.SentFrom.City,
+                                   Contact = p.SentFrom.Contact,
+                               },
                                CreatedAt = p.CreatedAt
                            };
             if (!ModelState.IsValid)
@@ -79,9 +93,17 @@ namespace api.Controllers
                                ID = p.ID,
                                Subject = p.Subject,
                                Message = p.Message,
-                               SentFrom = p.SentFrom,
+                               SentFrom = new LotDto()
+                               {
+                                   ID = p.SentFrom.ID,
+                                   Address = p.SentFrom.Address,
+                                   City = p.SentFrom.City,
+                                   Contact = p.SentFrom.Contact,
+                                   Name = p.SentFrom.Name
+                               },
                                CreatedAt = p.CreatedAt
                            };
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -94,7 +116,7 @@ namespace api.Controllers
         [ProducesResponseType(400)]
         public IActionResult SendPack(FilePackIn filePack)
         {
-            if (!_packRepository.LotExists(filePack.SentFrom))
+            if (!_packRepository.LotExists(filePack.SentFrom.ID))
                 return BadRequest("Invalid ID");
 
             if (filePack.Files == null)
@@ -105,7 +127,7 @@ namespace api.Controllers
                 return StatusCode(400, "Invalid Transfer: No files added");
             }
 
-            if (!_packRepository.CreatePack(filePack.SentFrom, filePack.SentTo, filePack.Subject, filePack.Message, filePack.Files))
+            if (!_packRepository.CreatePack(filePack.SentFrom.ID, filePack.SentTo, filePack.Subject, filePack.Message, filePack.Files))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
