@@ -8,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, Container, Tab, Tabs } from "@mui/material";
+import { Box, Button, Container, Tab, Tabs, TextField } from "@mui/material";
 import Link from "next/link";
 
 const lotID = 3;
@@ -18,22 +18,39 @@ const Home = () => {
     const [lots, setLots] = useState([]);
     const [results, setResults] = useState([]);
     const [lotSelected, setLotSelected] = useState(0);
+    const [limit, setLimit] = useState(3);
+    const [skip, setSkip] = useState(0);
 
-    let ts = [];
-
-    function handleLotSelected(id) {
+    function handleLotSelected(id, data) {
         setLotSelected(id);
         let temp = [];
-        if (rows.length <= 0) {
-            ts.map((t) => {
-                if (t.sentFrom.id === id) temp.push(t);
-            });
-        } else {
-            rows.map((t) => {
-                if (t.sentFrom.id === id) temp.push(t);
-            });
-        }
+        data.map((r) => {
+            if (id == 0) {
+                temp.push(r);
+            } else if (r.sentFrom.id === id) {
+                temp.push(r);
+            }
+        });
         setResults(temp);
+    }
+
+    async function handleShowMore() {
+        let newSkip = skip + limit;
+        try {
+            let res = await fetch(
+                `${process.env.API_URL}/filepack/received?id=${lotID}`
+            );
+            const newRows = await res.json();
+            let temp = [];
+            rows.map((r) => temp.push(r));
+            newRows.map((r) => temp.push(r));
+            const data = temp;
+            setRows(temp);
+            setSkip(skip + limit);
+            handleLotSelected(lotSelected, data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async function getLots() {
@@ -41,7 +58,6 @@ const Home = () => {
             const res = await fetch(`${process.env.API_URL}/lot`);
             const data = await res.json();
             setLots(data);
-            handleLotSelected(data[0].id);
         } catch (error) {
             console.log("Error fetching and parsing data", error);
         }
@@ -52,9 +68,10 @@ const Home = () => {
             let res = await fetch(
                 `${process.env.API_URL}/filepack/received?id=${lotID}`
             );
-            ts = await res.json();
-            setRows(ts);
-            getLots();
+            const data = await res.json();
+            setRows(data);
+			getLots();
+			handleLotSelected(0, data);
         } catch (error) {
             console.log(error);
         }
@@ -64,12 +81,17 @@ const Home = () => {
 
     return (
         <>
-            <Box>
+            <Box sx={{ display: "flex" }}>
                 <Tabs
                     value={lotSelected}
                     onChange={(e) => handleLotSelected(e.target.value)}
                     aria-label="basic tabs example"
                 >
+                    <Tab
+                        value={0}
+                        label={"All"}
+                        onClick={() => handleLotSelected(0)}
+                    />
                     {lots.length > 0 ? (
                         lots.map((lot) => {
                             return (
@@ -98,35 +120,48 @@ const Home = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {results.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                sx={{
-                                    "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.id}
-                                </TableCell>
-                                <TableCell>{row.subject}</TableCell>
-                                <TableCell align="right">{"3"}</TableCell>
-                                <TableCell align="right">
-                                    {new Date(row.createdAt).toDateString()}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Link href={`/filepack/${row.id}`}>
-                                        <Button variant="contained">
-                                            View
-                                        </Button>
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {results.map((r) => {
+                            return (
+                                <TableRow
+                                    key={r.id}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {r.id}
+                                    </TableCell>
+                                    <TableCell>{r.subject}</TableCell>
+                                    <TableCell align="right">{"3"}</TableCell>
+                                    <TableCell align="right">
+                                        {new Date(r.createdAt).toDateString()}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Link href={`/filepack/${r.id}`}>
+                                            <Button variant="contained">
+                                                View
+                                            </Button>
+                                        </Link>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
+            {rows.length < limit - 1 ? (
+                <></>
+            ) : (
+                <Button
+                    variant="contained"
+                    sx={{ marginTop: "1rem" }}
+                    onClick={() => handleShowMore()}
+                >
+                    Show More
+                </Button>
+            )}
         </>
     );
 };
