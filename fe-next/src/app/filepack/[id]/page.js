@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
-import JSZip from "jszip";
+// import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 const FilePackViewPage = ({ params }) => {
@@ -39,16 +39,16 @@ const FilePackViewPage = ({ params }) => {
         saveAs(file.content, file.name);
     }
 
-    async function downloadZip() {
-        const zip = new JSZip();
-        files.map((file) => {
-            zip.file(file.name, file.content);
-            return file;
-        });
-        await zip.generateAsync({ type: "blob" }).then((content) => {
-            saveAs(content, "hdcshare-download.zip");
-        });
-    }
+    // async function downloadZip() {
+    //     const zip = new JSZip();
+    //     files.map((file) => {
+    //         zip.file(file.name, file.content);
+    //         return file;
+    //     });
+    //     await zip.generateAsync({ type: "blob" }).then((content) => {
+    //         saveAs(content, "hdcshare-download.zip");
+    //     });
+    // }
     return (
         <Box>
             <Typography
@@ -133,9 +133,9 @@ const FilePackViewPage = ({ params }) => {
                     <></>
                 )}
             </Box>
-            <Button variant="contained" onClick={() => downloadZip()}>
+            {/* <Button variant="contained" onClick={() => downloadZip()}>
                 Download all
-            </Button>
+            </Button> */}
         </Box>
     );
 };
