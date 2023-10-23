@@ -2,7 +2,7 @@
 
 ### Summary
 
-This is a demo of a file-transfer software I build for Home Detective Co. in North Carolina. The project was built in one month with a strict deadline to be ready for a company-wide employee training. The main pillars the project needed to exhibit were useability and security.
+This is a demo of a file-transfer software I built for Home Detective Co. in Colfax, North Carolina. This demo was built in one month with a strict deadline to be ready for a company-wide employee training. The project was shown off on 10/20/2023 and received great feedback! The main pillars the project needed to exhibit were useability and security.
 
 ### UI Overview
 
