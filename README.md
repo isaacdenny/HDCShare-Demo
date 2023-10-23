@@ -32,14 +32,19 @@ The transfer-view page is dynamically routed based on the transfer ID to allow f
 The employee training went great! Listeners felt the UI was very simple and easy to understand. There were great questions focused on new features to add to the final build and steps we can take to avoid potential security risks involved with client information sharing. 
 
 #### Overview of Discussed Features To Come
-1. No file zipping / extraction
-2. Starring or saving transfers
+1. Starring or saving transfers
+2. "New" transfers highlighted in inbox
 3. Filtering / search
-4. Views for important company announcements or news
+4. Notifications / alerts for important company announcements or news
 5. "Viewed" or "Printed" qualifications on transfers to show sender
 6. Support tickets and helpful documentation on the app
 7. Easy mass-downloading for large-quantity printing
 8. Scheduled deletion of transfers after viewed or printed
+
+#### Features to Drop
+1. File zipping / extraction
+2. Multiple senders/receivers (headquarters can send to everyone, satelite lots can only send to headquarters)
+3. Upload fileviewer
 
 While many of these features increase functionality, it was important to keep complexity to a minimum; certain features have been dropped for this purpose (i.e. file zipping)
 
