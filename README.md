@@ -2,7 +2,7 @@
 
 ### Summary
 
-This is a demo of a file-transfer software I built for Home Detective Co. in Colfax, North Carolina. This demo was built in one month with a strict deadline to be ready for a company-wide employee training. The project was shown off on 10/20/2023 and received great feedback! The main pillars the project needed to exhibit were useability and security.
+I developed a file-transfer software demo for Home Detective Co. in Colfax, North Carolina, integrating Next.js, MySQL, and ASP.NET Core technologies. With a tight one-month deadline for an upcoming company-wide training, the project successfully showcased its usability and security aspects. After its unveiling on 10/20/2023, the demo garnered positive feedback from the team, marking a significant milestone for the company.
 
 ### UI Overview
 
